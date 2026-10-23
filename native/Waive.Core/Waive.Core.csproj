@@ -1,0 +1,4 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup><TargetFramework>net10.0</TargetFramework><ImplicitUsings>enable</ImplicitUsings><Nullable>enable</Nullable></PropertyGroup>
+  <ItemGroup><EmbeddedResource Include="../Waive.Desktop/Data/96xs-keymap.json" LogicalName="Waive.Core.96xs-keymap.json" /></ItemGroup>
+</Project>

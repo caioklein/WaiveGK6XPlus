@@ -1,0 +1,8 @@
+.tools/
+Backups/
+dist/
+native/**/bin/
+native/**/obj/
+native/artifacts/
+reference/*.zip
+reference/gk6ctl/node_modules/

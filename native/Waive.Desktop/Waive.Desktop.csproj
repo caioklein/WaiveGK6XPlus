@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType><TargetFramework>net10.0-windows</TargetFramework><UseWPF>true</UseWPF>
+    <ImplicitUsings>enable</ImplicitUsings><Nullable>enable</Nullable><AssemblyName>WaiveGK6XPlus</AssemblyName>
+    <Version>0.4.0</Version><Product>WaiveGK6XPlus</Product><Title>WaiveGK6XPlus</Title><Description>Native keyboard profiles, colors, and effects</Description>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../Waive.Core/Waive.Core.csproj" /><ProjectReference Include="../Waive.Device.Windows/Waive.Device.Windows.csproj" />
+    <Content Include="Data/*.json" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+</Project>
+

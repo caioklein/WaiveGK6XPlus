@@ -1,0 +1,71 @@
+{
+  "repository": "https://github.com/tfsoares/gk6ctl",
+  "commit": "6d026860c47bdbda47983593697c1a383d111916",
+  "hardwareAccess": false,
+  "packetResults": [
+    {
+      "name": "query-firmware",
+      "matched": true
+    },
+    {
+      "name": "query-device-id",
+      "matched": true
+    },
+    {
+      "name": "query-model",
+      "matched": true
+    },
+    {
+      "name": "query-matrix",
+      "matched": true
+    },
+    {
+      "name": "select-onboard-1",
+      "matched": true
+    },
+    {
+      "name": "select-live",
+      "matched": true
+    },
+    {
+      "name": "ping",
+      "matched": true
+    },
+    {
+      "name": "enable-key-reports",
+      "matched": true
+    },
+    {
+      "name": "clean-onboard-static-colors",
+      "matched": true
+    },
+    {
+      "name": "write-onboard-first-red-key",
+      "matched": true
+    },
+    {
+      "name": "write-last-partial-packet",
+      "matched": true
+    }
+  ],
+  "codecResults": [
+    {
+      "type": 1,
+      "name": "PROFILE",
+      "encodedBytesMatched": true,
+      "crossDecoded": true
+    },
+    {
+      "type": 2,
+      "name": "light",
+      "encodedBytesMatched": true,
+      "crossDecoded": true
+    },
+    {
+      "type": 5,
+      "name": "MACRO",
+      "encodedBytesMatched": true,
+      "crossDecoded": true
+    }
+  ]
+}

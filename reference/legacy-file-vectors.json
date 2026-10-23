@@ -1,0 +1,20 @@
+[
+  {
+    "type": 1,
+    "name": "PROFILE",
+    "body": "{\"ModeIndex\":2,\"Name\":\"Fixture profile\"}",
+    "bytesBase64": "MUZNQ+YUAAAA8VNlKAAAAJwdAAABAAAAUFJPRklMRQDe2B7GEtXsraXkkmrfGpt7BHzPLSgVdlQyuExF3dXRg/vrSt0PQ/9r"
+  },
+  {
+    "type": 2,
+    "name": "light",
+    "body": "{\"GUID\":\"22222222-2222-2222-2222-222222222222\",\"Name\":\"Fixture effect\",\"Frames\":[{\"Count\":2,\"Data\":{\"0\":\"0xff0000\",\"47\":\"0x0080ff\"}}],\"LEConfigs\":[{\"Type\":0,\"Color\":\"0xff0000\",\"Count\":1,\"StayCount\":0,\"Keys\":[0]}]}",
+    "bytesBase64": "MUZNQy0sAAAA8VNl1QAAAMR4AAACAAAAbGlnaHQAAADJxWkNVpVyDJcwNyEb6WVVl4hH4mq9c+aWmlGNjb2lHWXRjRo64Dq1MCbW3mgYtmW/AofVsrIaiYo2mI20AdDaDhfQYaW9oPdZaV71CKSMA7wIBubbcfZC2QbFNwDQh+xAJXORTXtGzHn1zBJitkn/Z7JtyI8Fihe0M4vsODMVmmIkRjEL6YbFTvXLetf+S7QrrTIrG1vxuVfo8WASyTXcXDvXc6qcaN3xEF89w+5AWaaVIAyl7Xm22yQBIPIopIKU2HTayfXW/jU8+JB4pwBqxHZMHV8="
+  },
+  {
+    "type": 5,
+    "name": "MACRO",
+    "body": "[General]\nName=Fixture macro\nScriptID=11111111-1111-1111-1111-111111111111\nRepeats=1\nStopMode=1\n[Script]\nKeyDown \"Left Shift\"\nKeyDown \"A\"\nDelay 50\nKeyUp \"A\"\nKeyUp \"Left Shift\"\nLeftDown\nLeftUp",
+    "bytesBase64": "MUZNQ+D/AAAA8VNlvwAAAJ35AAAFAAAATUFDUk8AAACI/WzgI6CncokjZdLL/H0gvKy9up9HTpVUdZzGCtrYl/GuHxPta9lkb28E/g8Q8/B8z+OfXL9P/WMAOkd5r2lqgvU3FEFKbBx2rqtOByj17JJnlrlhY+m1lRAuyEvqMj2eAIlftRe0NuRHdmuAkIr4FmYEzADEpC7V422g1LMzX+CML3Ka58i0HGDcE4947QDuqSDWeMXcWlETpEjupeud5X2FGCZ7/e5RuTbfui5JbwdQTKWxzO74Hs7DhVq5bQ=="
+  }
+]
