@@ -62,7 +62,7 @@ public partial class MainWindow
     void StartupOptionChanged(object sender,RoutedEventArgs e)
     {
         if(loadingOptions||!IsLoaded)return;
-        Guard(()=>{using var run=Registry.CurrentUser.CreateSubKey(StartupKey);if(StartWithWindows.IsChecked==true)run.SetValue(StartupName,'"'+Environment.ProcessPath+'"'+" --minimized");else run.DeleteValue(StartupName,false);run.DeleteValue("WaiveKeyboard",false);SetResult("Windows startup preference updated. Startup opens WaiveGK6XPlus minimized; Apply starts your live profile.");});
+        Guard(()=>{using var run=Registry.CurrentUser.CreateSubKey(StartupKey);if(StartWithWindows.IsChecked==true)run.SetValue(StartupName,'"'+Environment.ProcessPath+'"'+" --minimized");else run.DeleteValue(StartupName,false);run.DeleteValue("WaiveKeyboard",false);SetResult("Windows startup preference updated. Startup opens WaiveGK6XPlus in the tray. Apply now starts an app-controlled profile.");});
     }
 }
 
@@ -93,7 +93,7 @@ sealed class TrayControl : IDisposable
             {
                 SetForegroundWindow(window);
                 var menu=new ContextMenu{Placement=PlacementMode.MousePoint};
-                foreach(var (label,action) in new[]{("Open WaiveGK6XPlus",restore),("Stop live profile",stop),("Exit",exit)}){var item=new MenuItem{Header=label};item.Click+=(_,_)=>action();menu.Items.Add(item);}
+                foreach(var (label,action) in new[]{("Open WaiveGK6XPlus",restore),("Use onboard settings",stop),("Exit",exit)}){var item=new MenuItem{Header=label};item.Click+=(_,_)=>action();menu.Items.Add(item);}
                 menu.IsOpen=true;
             }
         }
@@ -115,4 +115,5 @@ sealed class TrayControl : IDisposable
     [DllImport("user32.dll")]static extern bool SetForegroundWindow(nint window);
     [DllImport("user32.dll",CharSet=CharSet.Unicode)]static extern uint RegisterWindowMessage(string message);
 }
+
 

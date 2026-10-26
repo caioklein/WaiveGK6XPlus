@@ -6,7 +6,9 @@ Native Windows keyboard configuration for the 96XS-RGB (model 656801936). Versio
 
 Double-click **Launch.cmd**, or open **dist/WaiveGK6XPlus/WaiveGK6XPlus.exe**. Launch-Native.cmd is a compatibility shortcut to the same app.
 
-Select keys by dragging across the keyboard, then choose a color or effect and click Apply. Ctrl-drag adds/removes keys; Alt-drag removes. Save keeps your profile on this PC. The sidebar switches between live operation and onboard storage. The header button and Windows minimize button hide the app in the system tray and keep it running. Double-click the tray icon to reopen it, or right-click for Open, Stop live profile, and Exit. Close exits.
+Select keys by dragging across the keyboard, then choose a color or effect. Ctrl-drag adds/removes keys; Alt-drag removes. Apply now tries the profile through the app. Save lighting onboard stores only lighting in the selected keyboard memory slot, preserving key assignments and macros. Save on PC keeps an editable local copy. Key mapping has a separate Save full profile onboard action for lighting, key assignments, and referenced macros.
+
+The Windows minimize button hides the app in the system tray and keeps it running. Double-click the tray icon to reopen it, or right-click for Open, Use onboard settings, and Exit. Close exits.
 
 Profiles are kept in **dist/WaiveGK6XPlus/Profiles**. Keep that folder when updating. Native profile bundles use the .waive extension. Import/export also supports legacy CMF, CMS, simple LE, and GPR files.
 
@@ -14,7 +16,7 @@ Profiles are kept in **dist/WaiveGK6XPlus/Profiles**. Keep that folder when upda
 
 Onboard writes now use the firmware's separate erase and data-write acknowledgements and its lighting-effect storage region. The built-in lighting write was physically confirmed: Q–P red, other lights off. A lighting-only write was also acknowledged on Layer 3. Both tests preserved key assignments and macros. Power-cycle persistence has not yet been independently checked.
 
-Profiles without key overrides preserve existing onboard key assignments and macros. Profiles with key/Fn overrides write their complete key configuration; check those assignments before applying. The built-in layer changes lighting only, using all five built-in lighting slots. Key-press glow uses live mode or an editable onboard layer.
+Save lighting onboard always preserves existing key assignments and macros, even when the edited profile contains key overrides. Save full profile onboard writes key and macro regions when the profile has key/Fn overrides; check those assignments before using it. The built-in slot changes lighting only, using all five built-in lighting slots. Key-press glow needs Apply now or an editable keyboard Layer 1, 2, or 3.
 
 ## Source and build
 

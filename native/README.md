@@ -4,9 +4,9 @@ An English-only native WPF editor for the confirmed 96XS-RGB, model 656801936, f
 
 ## Launch and background operation
 
-Use Launch.cmd or dist/WaiveGK6XPlus/WaiveGK6XPlus.exe. Keep the published folder together. Close other keyboard utilities before connecting. The app's header and normal Windows minimize buttons both hide it in the system tray, removing it from the taskbar. Live lighting continues; UI animation previews stop while minimized. Normal Close exits and returns live mode to the selected onboard layer.
+Use Launch.cmd or dist/WaiveGK6XPlus/WaiveGK6XPlus.exe. Keep the published folder together. Close other keyboard utilities before connecting. The normal Windows minimize button hides the app in the system tray, removing it from the taskbar. App-controlled lighting continues; UI animation previews stop while minimized. Normal Close exits and returns to the selected keyboard memory slot.
 
-The tray icon is always available while minimized. Double-click it to reopen the app; right-click for Open, Stop live profile, and Exit. Always show tray icon also keeps it visible while the window is open. Relaunching the app restores its existing hidden window. Start with Windows is opt-in and opens minimized. The existing startup entry is migrated when its verified executable path belongs to the renamed app. Startup/reconnect never automatically applies a profile or plays a macro.
+The tray icon is always available while minimized. Double-click it to reopen the app; right-click for Open, Use onboard settings, and Exit. Always show tray icon also keeps it visible while the window is open. Relaunching the app restores its existing hidden window. Start with Windows is opt-in and opens minimized. The existing startup entry is migrated when its verified executable path belongs to the renamed app. Startup/reconnect never automatically applies a profile or plays a macro.
 
 ## Colors and effects
 
@@ -18,7 +18,13 @@ The keyboard preview and all lighting payloads use LED locations, separately fro
 
 ## Save, Apply, and onboard storage
 
-Save writes a complete bundle to Profiles beside the executable. It does not change the keyboard. Apply sends the current profile according to Live/Onboard and layer choices in the sidebar. Previous saves are preserved as .bak; Delete renames files to .deleted-... for recovery. Unreadable files are reported and kept.
+Save on PC writes a complete editable bundle to Profiles beside the executable. Previous saves are preserved as .bak; Delete saved copy renames files to .deleted-... for recovery. Unreadable files are reported and kept.
+
+Apply now always uses app control, regardless of the mode recorded in an older profile. The app must stay running or minimized to the tray. Use onboard settings stops app control and returns to the selected keyboard memory slot.
+
+Save lighting onboard writes only colors, effects, and key-press lighting to that slot. It uses a temporary copy without key assignments, Fn assignments, or macros, so those keyboard regions are preserved. The edited profile and its PC copy retain those assignments. The app can be closed after an onboard save.
+
+Save full profile onboard, in Key mapping, also writes key assignments and referenced macros when the profile has key overrides. It requires an editable Layer 1, 2, or 3. Fn shortcuts use this action; website/file/program actions require Apply now. Older profile target modes are migrated to the memory-slot selection when loaded, without rewriting the original file.
 
 The onboard-write fix uses configuration mode for host-report setup, accepts firmware 4.5's zero-status erase reply, and checks data-write status 1. Flash replies identify the opcode rather than echoing the layer number. A rejected write now stops immediately with its actual status, rather than timing out waiting for an echoed layer.
 
@@ -40,11 +46,12 @@ Run powershell -ExecutionPolicy Bypass -File native/Build.ps1. It uses the local
 
 201 C# checks cover original packets, Windows framing, captured live/flash replies, file codecs, corrupt input, selection geometry, all 103 displayed key locations, Q–P payloads, base/Fn macro indices, size limits, write failure handling, mode transitions, and cancellation cleanup. Temporary check directories are removed after each run.
 
-All 39 packaged UI checks passed. The minimized sample measured 0% of one CPU core over 20 seconds after exercising the editors (about 157 MiB private memory and 178 MiB working set; this is not a clean-start memory baseline).
+All 44 packaged UI checks passed, including separate save destinations, lighting-only preservation of bindings, full-profile bindings, and native minimization to the tray. The minimized sample measured about 0.08% of one CPU core over 20 seconds after exercising the editors (about 163 MiB private memory and 213 MiB working set; this is not a clean-start memory baseline).
 
-Read-only UI checks: WaiveGK6XPlus.exe --smoke <output-folder>. Add --idle-smoke for clean startup without opening editors. Smoke mode never clicks Apply or writes onboard settings. It exercises selection, colors/effects, undo, mapping, branded UI, theme templates, dropdown opening, and system-tray minimization and restoration. Reports stay local and may include device identifiers; physical key-report notifications are not logged. Latest reports are in native/artifacts/tray-smoke.
+Read-only UI checks: WaiveGK6XPlus.exe --smoke <output-folder>. Add --idle-smoke for clean startup without opening editors. Smoke mode never clicks Apply or writes onboard settings. It exercises selection, colors/effects, undo, mapping, branded UI, theme templates, dropdown opening, and system-tray minimization and restoration. Reports stay local and may include device identifiers; physical key-report notifications are not logged. Latest reports are in native/artifacts/ui-review-smoke.
 
 Old Electron source is archived in reference/legacy-electron-source.zip without reinstallable dependencies. User data was preserved in Backups/legacy-user-data.zip before duplicate distributions were removed. See docs/CLEANUP-REPORT.md.
+
 
 
 

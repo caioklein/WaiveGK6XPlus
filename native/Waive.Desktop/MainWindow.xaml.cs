@@ -135,7 +135,7 @@ public partial class MainWindow : Window
     void HexChanged(object sender, TextChangedEventArgs e)
     {
         if (!ready || loadingProfile) return;
-        try { color = Rgb.Parse(HexBox.Text); validColor = true; PaintSelection(); SetResult("Color edited. Save on this PC or Apply to keyboard."); RefreshPreview(); }
+        try { color = Rgb.Parse(HexBox.Text); validColor = true; PaintSelection(); SetResult("Color changed in the preview. Apply now or save lighting onboard when ready."); RefreshPreview(); }
         catch (FormatException error) { validColor = false; SetResult(error.Message, true); UpdateButtons(); }
     }
     void BrightnessChanged(object sender, RoutedPropertyChangedEventArgs<double> e) { if (!ready || loadingProfile) return; BeforeEdit(); profile.Brightness=(int)BrightnessSlider.Value; Changed(); }
@@ -234,7 +234,7 @@ public partial class MainWindow : Window
             ConnectButton.Content = "Reconnect";
             if (identified.ModelId != 656801936)
                 SetResult("Identified successfully. Color writes are limited to 96XS-RGB in this first build.", true);
-            else SetResult("Connected. Choose a color and click Apply to keyboard.");
+            else SetResult("Connected. Apply now to try your changes, or save lighting onboard to keep them on the keyboard.");
         }
         catch { session.Dispose(); throw; }
     }
@@ -246,6 +246,9 @@ public partial class MainWindow : Window
     {
         var applied=profile.Clone();applied.Mode=stored?returnLayer:0;applied.ReturnLayer=returnLayer;
         if(stored&&!includeBindings){applied.Keys.Clear();applied.FnKeys.Clear();applied.Macros.Clear();}
+        if(!stored&&applied.FnKeys.Count>0)throw new FormatException("Fn shortcuts need Save full profile onboard in Key mapping. Choose Layer 1, 2, or 3 in Keyboard memory.");
+        if(stored&&applied.Mode==1&&applied.KeyEffects.Count>0)throw new FormatException("Key-press glow needs Layer 1, 2, or 3 in Keyboard memory. Choose one, or use Apply now.");
+        if(stored&&includeBindings&&applied.Mode==1)throw new FormatException("Built-in lighting stores lighting only. Choose Layer 1, 2, or 3 to save key assignments and macros.");
         return applied;
     }
     async Task ApplyProfileAsync(bool stored,bool includeBindings=false)
@@ -291,7 +294,7 @@ public partial class MainWindow : Window
                 catch (Exception restoreError) { Record("Return to onboard mode failed: " + restoreError.Message); }
             }
             if (started && !recovered) await DisconnectAsync(false);
-            var next = !started ? "" : recovered ? " Returned to built-in lighting. You can try again." : " Reconnect before retrying.";
+            var next = !started ? "" : recovered ? " Returned to the selected keyboard memory slot. You can try again." : " Reconnect before retrying.";
             SetResult(error.Message + next + (stored && started ? " Stored lighting may be partially written." : ""), true);
         }
         finally { SetBusy(false); }
@@ -368,7 +371,7 @@ public partial class MainWindow : Window
     }
     void UpdateActivity()
     {
-        FooterStatus.Text = live ? "Live mode · USB keepalive active" : "No background work";
+        FooterStatus.Text = live ? "App-controlled profile active" : "Using keyboard memory";
     }
     void WindowStateChanged(object? sender, EventArgs e)
     {
@@ -425,7 +428,15 @@ public partial class MainWindow : Window
             var storedLighting=ProfileForAction(true);
             var storedPlan=ProfileCompiler.StoredPlan(storedLighting,defaultKeys,112);
             uiChecks["lightingSavePreservesBindings"]=storedLighting.Keys.Count==0&&storedLighting.FnKeys.Count==0&&profile.Keys[47]=="A"&&storedPlan.All(step=>step.Command.Code is not (0x22 or 0x31 or 0x25));
+            profile.Mode=4;
             uiChecks["applyNowIgnoresLegacyStoredMode"]=ProfileForAction(false).Mode==0;
+            profile.Mode=0;
+            var originalLayer=returnLayer;returnLayer=4;
+            profile.FnKeys[47]="B";
+            var fullProfile=ProfileForAction(true,true);
+            uiChecks["fullProfileSaveRetainsBindings"]=fullProfile.Mode==4&&fullProfile.Keys[47]=="A"&&fullProfile.FnKeys[47]=="B";
+            uiChecks["lightingSaveRemovesFnOverrides"]=ProfileForAction(true).FnKeys.Count==0&&profile.FnKeys[47]=="B";
+            returnLayer=originalLayer;profile.FnKeys.Clear();
             profile.Keys.Clear();
             HexBox.Text = previousHex;
             BrightnessSlider.Value = 100;
@@ -463,6 +474,7 @@ public partial class MainWindow : Window
             RestoreFromTray();AnimatePreview.IsChecked=false;
             profile=initialProfile;SyncProfileControls();SelectAllClicked(this,new RoutedEventArgs());EditorTabs.SelectedIndex=0;
             uiChecks["fullBrandName"]=Title=="WaiveGK6XPlus"&&System.Reflection.Assembly.GetExecutingAssembly().GetName().Name=="WaiveGK6XPlus";
+            uiChecks["noExtraMinimizeButton"]=FindName("MinimizeButton") is null;
             BrightnessSlider.ApplyTemplate();LayerSelector.ApplyTemplate();BindingChoice.ApplyTemplate();
             uiChecks["themedSliderHasWorkingTrack"]=BrightnessSlider.Template.FindName("PART_Track",BrightnessSlider) is System.Windows.Controls.Primitives.Track;
             uiChecks["editableDropdownRetainsTextBox"]=BindingChoice.Template.FindName("PART_EditableTextBox",BindingChoice) is TextBox;

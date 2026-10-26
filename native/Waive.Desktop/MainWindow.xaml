@@ -9,7 +9,7 @@
     <TextBlock Text="WaiveGK6XPlus" FontSize="25" FontWeight="SemiBold" VerticalAlignment="Center"/>
     <TextBlock Text=" /  KEYBOARD" FontSize="11" Foreground="#8296AB" VerticalAlignment="Center" Margin="12,4,0,0"/>
    </StackPanel>
-   <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center"><Button x:Name="MinimizeButton" Content="—  Minimize to tray" Click="MinimizeClicked" Padding="12,8" Margin="0,0,12,0" AutomationProperties.Name="Minimize WaiveGK6XPlus to system tray"/><Border Background="#202D38" CornerRadius="12" Padding="12,5" VerticalAlignment="Center"><TextBlock Text="NATIVE EDITOR  ·  0.4" Foreground="#A9BDC9" FontSize="10"/></Border></StackPanel>
+   <Border HorizontalAlignment="Right" Background="#202D38" CornerRadius="12" Padding="12,5" VerticalAlignment="Center"><TextBlock Text="VERSION 0.4" Foreground="#A9BDC9" FontSize="10"/></Border>
   </Grid>
   <Grid Grid.Row="1">
    <Grid.ColumnDefinitions><ColumnDefinition Width="220"/><ColumnDefinition Width="24"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
@@ -28,20 +28,19 @@
       <TextBlock Text="PROFILES ON THIS PC" FontSize="10" Foreground="#8AA0B2"/>
       <ComboBox x:Name="ProfileList" Margin="0,10,0,8" SelectionChanged="ProfileChanged" AutomationProperties.Name="Saved profile"><ComboBox.ItemTemplate><DataTemplate><StackPanel Orientation="Horizontal"><Border Width="15" Height="15" CornerRadius="4" Background="{Binding Color}" Margin="0,0,7,0" VerticalAlignment="Center"/><TextBlock Text="{Binding Name}" Foreground="#EAF1F6" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis" MaxWidth="140" ToolTip="{Binding Name}"/></StackPanel></DataTemplate></ComboBox.ItemTemplate></ComboBox>
       <TextBox x:Name="ProfileName" Text="My keyboard" MaxLength="100" LostFocus="ProfileRenamed" AutomationProperties.Name="Profile name"/>
-      <WrapPanel Margin="0,10,0,0"><Button Content="Save" Click="SaveProfileClicked" Padding="12,8" Margin="0,0,6,6"/><Button Content="New" Click="NewProfileClicked" Padding="12,8" Margin="0,0,6,6"/><Button Content="Copy" Click="CopyProfileClicked" Padding="12,8" Margin="0,0,0,6"/></WrapPanel>
-      <WrapPanel><Button Content="Import" Click="ImportProfileClicked" Padding="12,8" Margin="0,0,6,6"/><Button Content="Export" Click="ExportProfileClicked" Padding="12,8" Margin="0,0,6,6"/><Button Content="Delete" Click="DeleteProfileClicked" Padding="12,8" Margin="0,0,0,6"/></WrapPanel>
+      <Button Content="Save on PC" Click="SaveProfileClicked" Margin="0,10,0,6" ToolTip="Keep an editable copy on this PC. This does not change the keyboard."/>
+      <WrapPanel><Button Content="New" Click="NewProfileClicked" Padding="10,8" Margin="0,0,6,6"/><Button Content="Duplicate" Click="CopyProfileClicked" Padding="10,8" Margin="0,0,0,6"/></WrapPanel>
+      <WrapPanel><Button Content="Import" Click="ImportProfileClicked" Padding="10,8" Margin="0,0,6,6"/><Button Content="Export" Click="ExportProfileClicked" Padding="10,8" Margin="0,0,0,6"/></WrapPanel>
+      <Button Content="Delete saved copy" Click="DeleteProfileClicked" Padding="10,8" Margin="0,0,0,6" ToolTip="Remove the copy on this PC. Keyboard settings are preserved."/>
       <TextBlock x:Name="ProfileStatus" Text="New · not saved" Foreground="#8AA0B2" FontSize="11" Margin="0,5,0,0"/>
      </StackPanel>
     </Border>
     <Border Background="#192530" CornerRadius="12" Padding="16" Margin="0,14,0,0"><StackPanel>
-      <TextBlock Text="WHERE THIS PROFILE RUNS" FontSize="10" Foreground="#8AA0B2" Margin="0,0,0,12"/>
-      <RadioButton x:Name="LiveOption" Content="Live · app stays running" IsChecked="True" Checked="ModeChanged" Margin="0,0,0,10"/>
-      <RadioButton x:Name="StoredOption" Content="Onboard · runs on keyboard" Checked="ModeChanged" Margin="0,0,0,10"/>
       <TextBlock x:Name="LayerCaption" FontSize="10" Foreground="#8AA0B2" Margin="0,0,0,6"/>
-      <ComboBox x:Name="LayerSelector" SelectionChanged="LayerChanged" AutomationProperties.Name="Onboard target or return layer"/>
+      <ComboBox x:Name="LayerSelector" SelectionChanged="LayerChanged" AutomationProperties.Name="Keyboard memory slot"/>
       <TextBlock x:Name="ModeDescription" Foreground="#92A9BA" FontSize="11" Margin="0,9,0,0" LineHeight="17"/>
     </StackPanel></Border>
-    <TextBlock Text="Save keeps a copy on this PC. Apply sends it to the keyboard. Live features need the app running." FontSize="12" Foreground="#7F95AA" Margin="4,18,4,0" LineHeight="19"/>
+    <TextBlock Text="Apply now uses the app. Save lighting onboard stores the lighting on your keyboard." FontSize="12" Foreground="#7F95AA" Margin="4,18,4,0" LineHeight="19"/>
     <Button Content="Save diagnostics" Click="DiagnosticsClicked" Background="#18222D" Margin="0,18,0,0" ToolTip="Save connection details and operation results locally. No keystrokes are recorded."/>
     <CheckBox x:Name="ShowTray" Content="Always show tray icon" Foreground="#97ACBE" Margin="4,16,0,0" Checked="TrayOptionChanged" Unchecked="TrayOptionChanged"/>
     <CheckBox x:Name="StartWithWindows" Content="Start minimized with Windows" Foreground="#97ACBE" Margin="4,10,0,12" Checked="StartupOptionChanged" Unchecked="StartupOptionChanged"/>
@@ -49,8 +48,8 @@
    <Grid Grid.Column="2">
     <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
     <StackPanel Margin="0,0,0,12">
-     <TextBlock Text="Make it yours." FontSize="28" FontWeight="SemiBold"/>
-     <TextBlock Text="1  Select keys    →    2  Choose colors or effects    →    3  Apply to keyboard" Foreground="#97ACBE" FontSize="13" Margin="0,5,0,0"/>
+     <TextBlock Text="Customize your keyboard" FontSize="28" FontWeight="SemiBold"/>
+     <TextBlock Text="Select keys, choose colors or effects, then apply now or save onboard." Foreground="#97ACBE" FontSize="13" Margin="0,5,0,0"/>
     </StackPanel>
     <Border Grid.Row="1" Background="#192530" CornerRadius="12" Padding="20" Margin="0,0,0,16">
      <StackPanel>
@@ -84,10 +83,10 @@
       </Grid>
      </StackPanel>
      <StackPanel Grid.Column="2">
-      <TextBlock Text="Choose a lighting look" FontSize="17" FontWeight="SemiBold"/>
-      <WrapPanel Margin="0,9,0,9"><TextBlock Text="Preset applies to:" FontSize="11" Margin="0,0,9,0"/><RadioButton x:Name="SelectionScope" GroupName="LookScope" Content="Selected keys" IsChecked="True" Checked="LightingScopeChanged" FontSize="11" Margin="0,0,10,0"/><RadioButton x:Name="WholeKeyboardScope" GroupName="LookScope" Content="All keys" Checked="LightingScopeChanged" FontSize="11" Margin="0"/></WrapPanel>
+      <TextBlock Text="Choose an effect" FontSize="17" FontWeight="SemiBold"/>
+      <WrapPanel Margin="0,9,0,9"><TextBlock Text="Effect applies to:" FontSize="11" Margin="0,0,9,0"/><RadioButton x:Name="SelectionScope" GroupName="LookScope" Content="Selected keys" IsChecked="True" Checked="LightingScopeChanged" FontSize="11" Margin="0,0,10,0"/><RadioButton x:Name="WholeKeyboardScope" GroupName="LookScope" Content="All keys" Checked="LightingScopeChanged" FontSize="11" Margin="0"/></WrapPanel>
       <UniformGrid x:Name="PresetPanel" Columns="2"/>
-      <DockPanel Margin="0,3,0,6"><TextBlock Text="PROFILE LOOK" Foreground="#8DA5B5" FontSize="10"/><TextBlock x:Name="LightingStatus" HorizontalAlignment="Right" FontSize="10" Foreground="#68E4CC"/></DockPanel>
+      <DockPanel Margin="0,3,0,6"><TextBlock Text="CUSTOM LIGHTING EFFECT" Foreground="#8DA5B5" FontSize="10"/><TextBlock x:Name="LightingStatus" HorizontalAlignment="Right" FontSize="10" Foreground="#68E4CC"/></DockPanel>
       <ComboBox x:Name="EffectChoice" SelectionChanged="EffectChanged" AutomationProperties.Name="Profile lighting effect"/>
       <CheckBox x:Name="AnimatePreview" Content="Animate keyboard preview" Foreground="#A9BFCE" Margin="0,9,0,12" Checked="PreviewOptionChanged" Unchecked="PreviewOptionChanged"/>
       <Expander Header="More key-press effects" Foreground="#A9BFCE"><StackPanel Margin="0,9,0,0">
@@ -101,33 +100,37 @@
      <TabItem Header="Key mapping"><ScrollViewer VerticalScrollBarVisibility="Auto"><Border Background="#192530" Padding="18"><StackPanel>
       <TextBlock Text="Assign an action to the selected keys" FontSize="16" FontWeight="SemiBold"/>
       <TextBlock Text="Select keys in the keyboard above. Choose a key, media action, shortcut, or macro." Foreground="#92A9BA" FontSize="12" Margin="0,8,0,10"/>
-      <WrapPanel><CheckBox x:Name="EditFn" Content="Edit Fn layer (onboard only)" Foreground="#EAF1F6" Margin="0,0,15,10" Checked="FnViewChanged" Unchecked="FnViewChanged"/><TextBlock x:Name="BindingSummary" FontSize="12" Foreground="#92A9BA"/></WrapPanel>
+      <WrapPanel><CheckBox x:Name="EditFn" Content="Edit Fn shortcuts" ToolTip="Fn shortcuts can be saved to keyboard Layers 1–3. Apply now supports the normal key layer." Foreground="#EAF1F6" Margin="0,0,15,10" Checked="FnViewChanged" Unchecked="FnViewChanged"/><TextBlock x:Name="BindingSummary" FontSize="12" Foreground="#92A9BA"/></WrapPanel>
       <ComboBox x:Name="BindingChoice" IsEditable="True" Margin="0,0,0,10" AutomationProperties.Name="Key action or shortcut"/>
       <WrapPanel><Button Content="Assign to selected" Click="AssignBindingClicked" Margin="0,0,8,8"/><Button Content="Restore selected defaults" Click="ClearBindingClicked" Margin="0,0,8,8"/></WrapPanel>
-      <TextBlock Text="Shortcut example: LCtrl+LShift+P. The Fn key itself is reserved. Macro playback supports repeat, hold, and toggle." FontSize="12" Foreground="#92A9BA"/>
-      <TextBlock Text="Open a website, file, or program · live mode only" Margin="0,16,0,8" FontSize="14"/>
+      <TextBlock Text="Shortcut example: LCtrl+LShift+P. The Fn key itself is reserved. Macro playback supports repeat, hold, and toggle." FontSize="12" Foreground="#92A9BA" TextWrapping="Wrap"/>
+      <Button x:Name="StoreProfileButton" Content="Save full profile onboard" Click="StoreProfileClicked" HorizontalAlignment="Left" Margin="0,16,0,6" ToolTip="Save lighting, key assignments, and referenced macros to the selected keyboard layer."/>
+      <TextBlock Text="Saves lighting and replaces this layer's key assignments and macros when the profile has key overrides. Choose Layer 1, 2, or 3 in Keyboard memory." TextWrapping="Wrap" Foreground="#92A9BA" FontSize="11" Margin="0,0,0,12"/>
+      <TextBlock Text="Open a website, file, or program · app must stay running" Margin="0,16,0,8" FontSize="14"/>
       <TextBox x:Name="OpenTarget" AutomationProperties.Name="Website address or full file path" ToolTip="Enter an https:// address, or browse for a file or program. Command arguments are not supported."/>
       <WrapPanel Margin="0,8,0,0"><Button Content="Browse…" Click="BrowseTargetClicked" Margin="0,0,8,0"/><Button Content="Assign open action" Click="AssignOpenClicked"/></WrapPanel>
      </StackPanel></Border></ScrollViewer></TabItem>
-     <TabItem Header="Libraries"><ScrollViewer VerticalScrollBarVisibility="Auto"><Border Background="#192530" Padding="18"><StackPanel>
+     <TabItem Header="Macros &amp; custom effects"><ScrollViewer VerticalScrollBarVisibility="Auto"><Border Background="#192530" Padding="18"><StackPanel>
       <WrapPanel><Button Content="Macro library and recorder" Click="MacrosClicked" Margin="0,0,10,10"/><Button Content="Lighting editor" Click="EffectsClicked" Margin="0,0,10,10"/></WrapPanel>
       <TextBlock Text="Build custom frame sequences, import lighting files, or record a macro here. Choose and assign your finished lighting effects on the Colors &amp; effects tab." Foreground="#92A9BA" FontSize="13" Margin="0,4,0,14"/>
       <TextBlock Text="Animations update only while active. Macro recording starts only when you click Record; F12 stops recording." Foreground="#92A9BA" FontSize="12"/>
      </StackPanel></Border></ScrollViewer></TabItem>
     </TabControl>
     <Grid Grid.Row="3" Margin="0,16,0,0">
+     <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
      <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
-     <StackPanel VerticalAlignment="Center" Margin="0,0,15,0">
-      <TextBlock x:Name="ResultText" Text="Preview only · connect a keyboard to apply." Foreground="#A3BAC9" FontSize="12"/>
+     <StackPanel Grid.ColumnSpan="3" VerticalAlignment="Center" Margin="0,0,0,10">
+      <TextBlock x:Name="ResultText" Text="Connect your keyboard to apply or save changes." TextWrapping="Wrap" Foreground="#A3BAC9" FontSize="12"/>
       <ProgressBar x:Name="ApplyProgress" Height="3" Minimum="0" Maximum="100" Visibility="Collapsed" Margin="0,6,0,0" Foreground="#68E4CC"/>
      </StackPanel>
-     <Button x:Name="StopButton" Grid.Column="1" Content="Stop live profile" Click="StopClicked" Visibility="Collapsed" Margin="0,0,10,0"/>
-     <Button x:Name="ApplyButton" Grid.Column="2" Content="Apply to keyboard" Click="ApplyClicked" Background="#68E4CC" Foreground="#102126" FontWeight="SemiBold" IsEnabled="False"/>
+     <Button x:Name="StopButton" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Right" Content="Use onboard settings" Click="StopClicked" Visibility="Collapsed" Margin="0,0,10,0" ToolTip="Stop the app-controlled profile and use the selected keyboard memory slot."/>
+     <Button x:Name="StoreLightingButton" Grid.Row="1" Grid.Column="1" Content="Save lighting onboard" Click="StoreLightingClicked" Margin="0,0,10,0" IsEnabled="False" ToolTip="Store colors and effects in the selected keyboard memory slot. Existing key assignments and macros are preserved."/>
+     <Button x:Name="ApplyButton" Grid.Row="1" Grid.Column="2" Content="Apply now" Click="ApplyClicked" ToolTip="Use this profile through the app. Minimize to the tray to keep it running; Use onboard settings stops it." Background="#68E4CC" Foreground="#102126" FontWeight="SemiBold" IsEnabled="False"/>
     </Grid>
    </Grid>
   </Grid>
   <DockPanel Grid.Row="2" Margin="0,20,0,0">
-   <TextBlock Text="LOCAL FIRST  /  ENGLISH ONLY" Foreground="#6F879A" FontSize="10"/>
+   <TextBlock Text="Minimize to system tray · Close to exit" Foreground="#6F879A" FontSize="10"/>
    <TextBlock x:Name="FooterStatus" Text="No background work" Foreground="#6F879A" FontSize="10" HorizontalAlignment="Right"/>
   </DockPanel>
  </Grid>

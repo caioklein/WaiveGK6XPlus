@@ -50,8 +50,9 @@ public partial class MainWindow
         loadingProfile=true;
         ProfileName.Text=profile.Name;color=Rgb.Parse(profile.Color);HexBox.Text=profile.Color;BrightnessSlider.Value=profile.Brightness;validColor=true;
         returnLayer=profile.ReturnLayer;
-        LiveOption.IsChecked=profile.Mode==0;StoredOption.IsChecked=profile.Mode!=0;LayerSelector.SelectedIndex=profile.Mode==0?returnLayer-1:profile.Mode-1;
         if(profile.Mode!=0)returnLayer=profile.Mode;
+        // Older files stored an Apply mode. Actions now choose their own destination.
+        profile.ReturnLayer=returnLayer;profile.Mode=0;LayerSelector.SelectedIndex=returnLayer-1;
         RefreshLibraries();loadingProfile=false;
         RefreshModeText();RefreshPreview();RefreshProfileStatus();
     }
@@ -59,7 +60,7 @@ public partial class MainWindow
     {
         var previous=loadingProfile;loadingProfile=true;
         BindingChoice.ItemsSource=KeyCatalog.Names.Select(name=>new ActionChoice(name,name)).Concat(profile.Macros.Select(m=>new ActionChoice("macro:"+m.Id,"Macro · "+m.Name))).ToArray();
-        var effects=new[]{new EffectChoiceItem(null,"None · use per-key colors")}.Concat(profile.Effects.Select(e=>new EffectChoiceItem(e.Id,e.Name))).ToArray();
+        var effects=new[]{new EffectChoiceItem(null,"Use colors and effects above")}.Concat(profile.Effects.Select(e=>new EffectChoiceItem(e.Id,e.Name))).ToArray();
         EffectChoice.ItemsSource=effects;EffectChoice.SelectedItem=effects.FirstOrDefault(e=>e.Id==profile.EffectId)??effects[0];
         KeyEffectChoice.ItemsSource=effects;KeyEffectChoice.SelectedIndex=0;loadingProfile=previous;
     }
@@ -67,10 +68,10 @@ public partial class MainWindow
     {
         if(!ready)return;
         LayerSelector.IsEnabled=!busy;
-        LayerCaption.Text=StoredOption.IsChecked==true?"SAVE INTO THIS LAYER":"RETURN TO WHEN STOPPED";
-        EditFn.IsEnabled=!busy&&StoredOption.IsChecked==true&&LayerSelector.SelectedIndex>0;
+        LayerCaption.Text="KEYBOARD MEMORY SLOT";
+        EditFn.IsEnabled=!busy&&LayerSelector.SelectedIndex>0;
         if(!EditFn.IsEnabled)EditFn.IsChecked=false;
-        ModeDescription.Text=StoredOption.IsChecked==true?"Stored on the keyboard. Apply writes this layer; Save keeps a local copy.":"Live profile: WaiveGK6XPlus runs effects and macros. Stop returns to the selected onboard layer.";
+        ModeDescription.Text="Save onboard writes to this slot. The keyboard also returns here when you stop the app-controlled profile or exit. The app can be closed after saving onboard.";
     }
     void BeforeEdit()
     {
@@ -102,7 +103,7 @@ public partial class MainWindow
         if(old is not null)savedProfiles[savedProfiles.IndexOf(old)]=profile.Clone();else savedProfiles.Add(profile.Clone());
         ProfileList.SelectedItem=savedProfiles.First(p=>p.Id==profile.Id);loadingProfile=false;
         File.WriteAllText(Path.Combine(AppContext.BaseDirectory,"Profiles","last-profile.txt"),profile.Id.ToString());
-        dirty=false;RefreshProfileStatus();SetResult("Profile saved on this PC. Apply sends it to the keyboard.");
+        dirty=false;RefreshProfileStatus();SetResult("Saved on this PC. Apply now or save lighting onboard to update the keyboard.");
     }
     void SaveProfileClicked(object sender,RoutedEventArgs e)=>Guard(SaveProfile);
     void ProfileRenamed(object sender,RoutedEventArgs e)
@@ -135,7 +136,7 @@ public partial class MainWindow
     void LayerChanged(object sender,SelectionChangedEventArgs e)
     {
         if(!ready||loadingProfile||LayerSelector.SelectedItem is not LayerChoice choice)return;
-        BeforeEdit();returnLayer=choice.Mode;profile.ReturnLayer=choice.Mode;if(StoredOption.IsChecked==true)profile.Mode=choice.Mode;Changed();RefreshModeText();
+        BeforeEdit();returnLayer=choice.Mode;profile.ReturnLayer=choice.Mode;Changed();RefreshModeText();UpdateButtons();
     }
     void SelectAllClicked(object sender,RoutedEventArgs e){selectedKeys.Clear();selectedKeys.UnionWith(Enumerable.Range(0,112));RefreshSelection();}
     void ClearSelectionClicked(object sender,RoutedEventArgs e){selectedKeys.Clear();RefreshSelection();}
@@ -177,9 +178,9 @@ public partial class MainWindow
         var indices=selectedKeys.Where(i=>i!=0).ToArray();if(indices.Length==0)throw new FormatException("Select a key other than Fn.");
         string binding=BindingChoice.SelectedItem is ActionChoice choice && BindingChoice.Text==choice.Name?choice.Value:BindingChoice.Text;
         if(!binding.StartsWith("macro:"))KeyCatalog.Encode(binding);
-        if(EditFn.IsChecked==true&&profile.Mode<2)throw new FormatException("Choose onboard layer 2, 3, or 4 to edit Fn assignments.");
+        if(EditFn.IsChecked==true&&returnLayer<2)throw new FormatException("Choose Layer 1, 2, or 3 in Keyboard memory to edit Fn shortcuts.");
         BeforeEdit();var target=EditFn.IsChecked==true?profile.FnKeys:profile.Keys;foreach(var index in indices)target[index]=binding;
-        Changed();RefreshSelection();SetResult("Key assignments edited. Save or Apply when ready.");
+        Changed();RefreshSelection();SetResult("Key assignments edited. Apply now to try them, or Save full profile onboard to keep them on the keyboard.");
     });
     void ClearBindingClicked(object sender,RoutedEventArgs e)=>Guard(()=>{BeforeEdit();var target=EditFn.IsChecked==true?profile.FnKeys:profile.Keys;foreach(var index in selectedKeys)target.Remove(index);Changed();RefreshSelection();});
     void UndoClicked(object sender,RoutedEventArgs e){if(busy||undo.Count==0)return;redo.Add(JsonSerializer.Serialize(profile));profile=JsonSerializer.Deserialize<KeyboardProfile>(undo[^1])!;undo.RemoveAt(undo.Count-1);dirty=true;SyncProfileControls();}
@@ -199,7 +200,7 @@ public partial class MainWindow
         if(animate)previewTimer.Start();else previewTimer.Stop();
     }
     void BrowseTargetClicked(object sender,RoutedEventArgs e){var dialog=new OpenFileDialog{Filter="Files and programs|*.*"};if(dialog.ShowDialog()==true)OpenTarget.Text=dialog.FileName;}
-    void AssignOpenClicked(object sender,RoutedEventArgs e)=>Guard(()=>{if(profile.Mode!=0)throw new FormatException("Choose Live profile on the Lighting tab first.");HostAction.Validate(OpenTarget.Text.Trim());var indices=selectedKeys.Where(i=>i!=0).ToArray();if(indices.Length==0)throw new FormatException("Select a key other than Fn.");BeforeEdit();foreach(var index in indices)profile.Keys[index]="open:"+OpenTarget.Text.Trim();Changed();RefreshSelection();});
+    void AssignOpenClicked(object sender,RoutedEventArgs e)=>Guard(()=>{HostAction.Validate(OpenTarget.Text.Trim());var indices=selectedKeys.Where(i=>i!=0).ToArray();if(indices.Length==0)throw new FormatException("Select a key other than Fn.");BeforeEdit();foreach(var index in indices)profile.Keys[index]="open:"+OpenTarget.Text.Trim();Changed();RefreshSelection();});
 }
 
 

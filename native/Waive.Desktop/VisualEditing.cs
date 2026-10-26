@@ -107,7 +107,7 @@ public partial class MainWindow
             effect.Rules.Add(new(){Type=kind=="rainbow"?1:2,Color=kind=="rainbow"?"#FF4040":color.Hex,Count=kind=="rainbow"?72:20,StayCount=5,Keys=targets.ToList()});
             AnimatePreview.IsChecked=true;
         }
-        RefreshLibraries();Changed();RefreshSelection();SetResult("Lighting preview updated. Apply to keyboard when ready.");
+        RefreshLibraries();Changed();RefreshSelection();SetResult("Lighting preview updated. Apply now or save lighting onboard when ready.");
     }
     void RefreshColorControls()
     {
