@@ -22,7 +22,7 @@
 
 The app uses **WPF and .NET 10** instead of Electron, Chromium, or a browser-based UI. It combines visual RGB editing with key remapping, macro tools, local profiles, and keyboard onboard storage.
 
-> **Preview note:** The banner above is an original project illustration, not a capture of the running application. The public repository does not currently include real UI screenshots, so none are presented as screenshots here.
+> **Preview note:** UI is not done yet and app is not finished, just for illustration purposed it. Actual program not as good looking (yet).
 
 ## Features
 
